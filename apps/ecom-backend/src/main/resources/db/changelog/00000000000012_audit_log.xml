@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="00000000000012-audit-log-seq" author="hutsdev">
+    <createSequence sequenceName="audit_log_sequence" startValue="1" incrementBy="1"/>
+  </changeSet>
+
+  <changeSet id="00000000000012-audit-log" author="hutsdev">
+    <createTable tableName="audit_log">
+      <column name="id" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="user_fk" type="bigint"/>
+      <column name="action" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="entity" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="timestamp" type="timestamp"/>
+      <column name="details" type="varchar(1000)"/>
+    </createTable>
+
+    <addForeignKeyConstraint baseColumnNames="user_fk" baseTableName="audit_log"
+                             constraintName="fk_audit_user"
+                             referencedColumnNames="id" referencedTableName="ecommerce_user"/>
+  </changeSet>
+</databaseChangeLog>

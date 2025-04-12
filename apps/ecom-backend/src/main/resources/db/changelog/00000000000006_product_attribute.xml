@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="00000000000006-attribute-seq" author="hutsdev">
+    <createSequence sequenceName="product_attribute_sequence" startValue="1" incrementBy="1"/>
+  </changeSet>
+
+  <changeSet id="00000000000006-attribute" author="hutsdev">
+    <createTable tableName="product_attribute">
+      <column name="id" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="public_id" type="${uuidType}">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="name" type="varchar(256)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="data_type" type="varchar(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="unit" type="varchar(50)"/>
+      <column name="category_fk" type="bigint"/>
+      <column name="created_date" type="timestamp"/>
+      <column name="last_modified_date" type="timestamp"/>
+    </createTable>
+
+    <addForeignKeyConstraint baseColumnNames="category_fk" baseTableName="product_attribute"
+                             constraintName="fk_attribute_category"
+                             referencedColumnNames="id" referencedTableName="product_category"/>
+  </changeSet>
+</databaseChangeLog>
