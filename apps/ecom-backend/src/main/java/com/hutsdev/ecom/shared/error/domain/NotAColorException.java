@@ -1,4 +1,4 @@
-package fr.codecake.ecom.shared.error.domain;
+package com.hutsdev.ecom.shared.error.domain;
 
 public class NotAColorException extends AssertionException {
 

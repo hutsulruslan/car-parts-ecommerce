@@ -1,4 +1,4 @@
-package fr.codecake.ecom.shared.error.infrastructure.primary;
+package com.hutsdev.ecom.shared.error.infrastructure.primary;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
