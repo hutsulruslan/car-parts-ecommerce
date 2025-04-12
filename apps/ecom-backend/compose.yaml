@@ -4,8 +4,8 @@ services:
     ports:
       - '5432:5432'
     environment:
-      - 'POSTGRES_USER=hutsdev'
-      - 'POSTGRES_DB=carPartsEcom'
-      - 'POSTGRES_PASSWORD=hutsdev'
+      - 'POSTGRES_USER=${POSTGRES_USER}'
+      - 'POSTGRES_DB=${POSTGRES_DB}'
+      - 'POSTGRES_PASSWORD=${POSTGRES_PASSWORD}'
     volumes:
       - '.volumes/hutsdev/postgres:/var/lib/postgresql/data'
