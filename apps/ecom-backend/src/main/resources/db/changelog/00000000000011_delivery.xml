@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="00000000000011-delivery-seq" author="hutsdev">
+    <createSequence sequenceName="delivery_sequence" startValue="1" incrementBy="1"/>
+  </changeSet>
+
+  <changeSet id="00000000000011-delivery" author="hutsdev">
+    <createTable tableName="delivery">
+      <column name="id" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="public_id" type="${uuidType}">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="order_fk" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="delivery_date" type="timestamp"/>
+      <column name="address" type="varchar(255)"/>
+      <column name="city_fk" type="bigint"/>
+      <column name="postal_code" type="varchar(20)"/>
+      <column name="status" type="varchar(50)"/>
+    </createTable>
+
+    <addForeignKeyConstraint baseColumnNames="order_fk" baseTableName="delivery"
+                             constraintName="fk_delivery_order"
+                             referencedColumnNames="id" referencedTableName="order"/>
+
+    <addForeignKeyConstraint baseColumnNames="city_fk" baseTableName="delivery"
+                             constraintName="fk_delivery_city"
+                             referencedColumnNames="id" referencedTableName="city"/>
+  </changeSet>
+</databaseChangeLog>

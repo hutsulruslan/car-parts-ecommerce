@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="00000000000009-delivery-day-seq" author="hutsdev">
+    <createSequence sequenceName="delivery_day_sequence" startValue="1" incrementBy="1"/>
+  </changeSet>
+
+  <changeSet id="00000000000009-delivery-day" author="hutsdev">
+    <createTable tableName="delivery_day">
+      <column name="id" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="city_fk" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="day_of_week" type="varchar(16)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <addForeignKeyConstraint baseColumnNames="city_fk" baseTableName="delivery_day"
+                             constraintName="fk_delivery_day_city"
+                             referencedColumnNames="id" referencedTableName="city"/>
+  </changeSet>
+</databaseChangeLog>

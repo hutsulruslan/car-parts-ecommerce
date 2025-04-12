@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="00000000000007-attribute-value-seq" author="hutsdev">
+    <createSequence sequenceName="product_attribute_value_sequence" startValue="1" incrementBy="1"/>
+  </changeSet>
+
+  <changeSet id="00000000000007-attribute-value" author="hutsdev">
+    <createTable tableName="product_attribute_value">
+      <column name="id" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="product_fk" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="attribute_fk" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="value_string" type="varchar(256)"/>
+      <column name="value_int" type="int"/>
+      <column name="value_bool" type="boolean"/>
+    </createTable>
+
+    <addForeignKeyConstraint baseColumnNames="product_fk" baseTableName="product_attribute_value"
+                             constraintName="fk_attribute_value_product"
+                             referencedColumnNames="id" referencedTableName="product"/>
+
+    <addForeignKeyConstraint baseColumnNames="attribute_fk" baseTableName="product_attribute_value"
+                             constraintName="fk_attribute_value_attribute"
+                             referencedColumnNames="id" referencedTableName="product_attribute"/>
+  </changeSet>
+
+</databaseChangeLog>
