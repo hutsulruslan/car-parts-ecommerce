@@ -76,7 +76,7 @@ public class User {
 
     Set<Authority> authorities = rolesFromAccessToken
       .stream()
-      .map(authority -> AuthorityBuilder.authority().authorityName(new AuthorityName(authority)).build())
+      .map(authority -> AuthorityBuilder.authority().name(new AuthorityName(authority)).build())
       .collect(Collectors.toSet());
 
     userBuilder.authorities(authorities);
