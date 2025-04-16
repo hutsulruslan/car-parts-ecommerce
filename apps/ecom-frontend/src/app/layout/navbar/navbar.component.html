@@ -41,11 +41,38 @@
           <fa-icon [icon]="['fas', 'user']" class="menu-icon"></fa-icon>
         }
       </div>
-      <ul class="dropdown-content menu menu-lg bg-base-100 rounded-box z-10 w-52 p-2 shadow">
-        <li>
-          <button class="link" (click)="login()">Увійти</button>
-        </li>
-      </ul>
+      @if (this.isConnected()) {
+        <ul class="dropdown-content menu menu-lg bg-base-100 rounded-box z-10 w-52 p-2 shadow">
+          <li>
+            <button class="link" (click)="closeDropDownMenu()" routerLink="/users/orders">Мої замовлення</button>
+          </li>
+          <li>
+            <button class="link" (click)="logout()">Вихід</button>
+          </li>
+        </ul>
+      } @else {
+        <ul class="dropdown-content menu menu-lg bg-base-100 rounded-box z-10 w-52 p-2 shadow">
+          <li>
+            <button class="link" (click)="login()">Увійти</button>
+          </li>
+        </ul>
+      }
+      @if (this.isConnected()) {
+        <ul class="dropdown-content menu menu-lg bg-base-100 rounded-box z-10 w-52 p-2 shadow">
+          <li>
+            <button class="link" (click)="closeDropDownMenu()" routerLink="/users/orders">Мої замовлення</button>
+          </li>
+          <li>
+            <button class="link" (click)="logout()">Вихід</button>
+          </li>
+        </ul>
+      } @else {
+        <ul class="dropdown-content menu menu-lg bg-base-100 rounded-box z-10 w-52 p-2 shadow">
+          <li>
+            <button class="link" (click)="login()">Увійти</button>
+          </li>
+        </ul>
+      }
     </div>
     <div class="dropdown dropdown-end me-2" routerLink="/cart">
       <div tabindex="0" role="button">
