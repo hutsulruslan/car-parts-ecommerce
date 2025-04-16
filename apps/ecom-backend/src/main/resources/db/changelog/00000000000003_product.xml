@@ -31,17 +31,15 @@
       <column name="last_modified_date" type="timestamp"/>
       <column name="category_fk" type="bigint"/>
     </createTable>
-    <addForeignKeyConstraint baseColumnNames="category_fk" baseTableName="product"
-                             constraintName="fk_category_product_constraint" deferrable="false"
-                             initiallyDeferred="false" referencedColumnNames="id" referencedTableName="product_category"
-                             validate="true"
-                             onDelete="NO ACTION"/>
     <addForeignKeyConstraint baseColumnNames="brand_fk" baseTableName="product"
                              constraintName="fk_product_brand"
                              referencedColumnNames="id" referencedTableName="brand"/>
     <addForeignKeyConstraint baseColumnNames="subcategory_fk" baseTableName="product"
                              constraintName="fk_product_subcategory"
-                             referencedColumnNames="id" referencedTableName="product_subcategory"/>
+                             deferrable="false"
+                             initiallyDeferred="false" referencedColumnNames="id" referencedTableName="product_subcategory"
+                             validate="true"
+                             onDelete="NO ACTION"/>
   </changeSet>
 
 

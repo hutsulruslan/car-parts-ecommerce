@@ -1,4 +1,4 @@
-package com.hutsdev.ecom.product.domain.aggreagate;
+package com.hutsdev.ecom.product.domain.aggregate;
 
 import com.hutsdev.ecom.shared.error.domain.Assert;
 import org.jilt.Builder;

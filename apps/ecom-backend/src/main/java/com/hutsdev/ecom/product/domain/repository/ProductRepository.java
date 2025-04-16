@@ -1,6 +1,6 @@
 package com.hutsdev.ecom.product.domain.repository;
 
-import com.hutsdev.ecom.product.domain.aggreagate.Product;
+import com.hutsdev.ecom.product.domain.aggregate.Product;
 import com.hutsdev.ecom.product.domain.vo.PublicId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

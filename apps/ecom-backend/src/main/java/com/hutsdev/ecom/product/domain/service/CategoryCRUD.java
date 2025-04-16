@@ -1,6 +1,6 @@
 package com.hutsdev.ecom.product.domain.service;
 
-import com.hutsdev.ecom.product.domain.aggreagate.Category;
+import com.hutsdev.ecom.product.domain.aggregate.Category;
 import com.hutsdev.ecom.product.domain.repository.CategoryRepository;
 import com.hutsdev.ecom.product.domain.vo.PublicId;
 import jakarta.persistence.EntityNotFoundException;

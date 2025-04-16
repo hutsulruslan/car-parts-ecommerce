@@ -1,4 +1,4 @@
-package com.hutsdev.ecom.product.domain.aggreagate;
+package com.hutsdev.ecom.product.domain.aggregate;
 
 import com.hutsdev.ecom.product.domain.vo.*;
 import com.hutsdev.ecom.shared.error.domain.Assert;
@@ -22,10 +22,11 @@ public class Product {
   private PublicId publicId;
   private int nbInStock;
 
-  public Product(List<Picture> pictures, Brand brand, ProductDescription description,
+  public Product(Brand brand, ProductDescription description,
                  ProductName name, ProductPrice price,
-                 SubCategory subCategory, int nbInStock,
-                 PublicId publicId, boolean featured, Long dbId) {
+                 SubCategory subCategory, List<Picture> pictures,
+                 Long dbId, boolean featured,
+                 PublicId publicId, int nbInStock) {
     assertMandatoryFields(brand, description, name, price, subCategory, pictures, featured, nbInStock);
 
     this.pictures = pictures;
