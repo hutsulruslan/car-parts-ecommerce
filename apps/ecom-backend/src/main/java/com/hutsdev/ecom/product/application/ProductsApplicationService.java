@@ -57,6 +57,11 @@ public class ProductsApplicationService {
     return categoryCRUD.delete(publicId);
   }
 
+  @Transactional(readOnly = true)
+  public Page<Category> findAllCategory(Pageable pageable) {
+    return categoryCRUD.findAll(pageable);
+  }
+
   @Transactional
   public SubCategory createSubCategory(SubCategory subCategory) {
     return subCategoryCRUD.save(subCategory);
@@ -67,6 +72,11 @@ public class ProductsApplicationService {
     return subCategoryCRUD.delete(publicId);
   }
 
+  @Transactional(readOnly = true)
+  public Page<SubCategory> findAllSubCategory(Pageable pageable) {
+    return subCategoryCRUD.findAll(pageable);
+  }
+
   @Transactional
   public Brand createBrand(Brand brand) {
     return brandCRUD.save(brand);
@@ -75,5 +85,10 @@ public class ProductsApplicationService {
   @Transactional
   public PublicId deleteBrand(PublicId publicId) {
     return brandCRUD.delete(publicId);
+  }
+
+  @Transactional(readOnly = true)
+  public Page<Brand> findAllBrand(Pageable pageable) {
+    return brandCRUD.findAll(pageable);
   }
 }
