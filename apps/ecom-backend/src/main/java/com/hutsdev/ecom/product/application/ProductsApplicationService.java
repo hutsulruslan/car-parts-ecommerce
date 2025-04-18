@@ -53,6 +53,7 @@ public class ProductsApplicationService {
     return categoryCRUD.save(category);
   }
 
+  @Transactional
   public PublicId deleteCategory(PublicId publicId) {
     return categoryCRUD.delete(publicId);
   }

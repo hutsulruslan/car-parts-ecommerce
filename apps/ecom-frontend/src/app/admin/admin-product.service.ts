@@ -19,7 +19,9 @@ export class AdminProductService {
 
   deleteCategory(publicId: string): Observable<string> {
     const params = new HttpParams().set('publicId', publicId);
-    return this.http.delete<string>(`${environment.apiUrl}/categories`, {params});
+    return this.http.delete<string>(`${environment.apiUrl}/categories`, {
+      params,
+    });
   }
 
   findAllCategories(): Observable<Page<ProductCategory>> {

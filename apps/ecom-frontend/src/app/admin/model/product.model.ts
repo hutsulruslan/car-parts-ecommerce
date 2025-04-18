@@ -1,3 +1,5 @@
+import {FormControl} from "@angular/forms";
+
 export interface Brand {
   publicId?: string;
   name: string;
@@ -32,4 +34,8 @@ export interface BaseProduct {
 
 export interface Product extends BaseProduct {
   publicId: string;
+}
+
+export type CreateCategoryFormContent = {
+  name: FormControl<string>;
 }
