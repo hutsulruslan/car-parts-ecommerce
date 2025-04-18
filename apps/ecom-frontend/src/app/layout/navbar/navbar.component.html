@@ -8,23 +8,41 @@
   </div>
   <div class="navbar-center flex">
     <div class="menu menu-sm sm:menu-lg menu-horizontal px-1">
-      <li><a href="/">Home</a></li>
+      <li><a href="/">Головна сторінка</a></li>
       <li>
         <details #productsMenu>
-          <summary>Products</summary>
+          <summary>Товари</summary>
           <ul class="z-30">
-            <li><a href="/products">All</a></li>
+            <li><a href="/products">Усі товари</a></li>
           </ul>
         </details>
       </li>
-      <li>
-        <details #adminMenu>
-          <summary>Admin</summary>
-          <ul class="z-30">
-            <li><a href="/products">All</a></li>
-          </ul>
-        </details>
-      </li>
+      @if (connectedUserQuery?.status() === "success"
+        && oauth2service.hasAnyAuthorities(connectedUserQuery?.data()!, "ROLE_ADMIN")) {
+        <li>
+          <details #adminMenu>
+            <summary>Адмін-панель</summary>
+            <ul class="z-30">
+              <li>
+                <a routerLink="admin/categories/list"
+                   (click)="closeMenu(adminMenu)" (clickOutside)="closeMenu(adminMenu)">Категорії</a>
+              </li>
+              <li>
+                <a routerLink="admin/subcategories/list"
+                   (click)="closeMenu(adminMenu)" (clickOutside)="closeMenu(adminMenu)">Підкатегорії</a>
+              </li>
+              <li>
+                <a routerLink="admin/brands/list"
+                   (click)="closeMenu(adminMenu)" (clickOutside)="closeMenu(adminMenu)">Бренди</a>
+              </li>
+              <li>
+                <a routerLink="admin/products/list"
+                   (click)="closeMenu(adminMenu)" (clickOutside)="closeMenu(adminMenu)">Товари</a>
+              </li>
+            </ul>
+          </details>
+        </li>
+      }
     </div>
   </div>
   <div class="navbar-end pe-4 flex align-items-center">
@@ -41,11 +59,38 @@
           <fa-icon [icon]="['fas', 'user']" class="menu-icon"></fa-icon>
         }
       </div>
-      <ul class="dropdown-content menu menu-lg bg-base-100 rounded-box z-10 w-52 p-2 shadow">
-        <li>
-          <button class="link" (click)="login()">Увійти</button>
-        </li>
-      </ul>
+      @if (this.isConnected()) {
+        <ul class="dropdown-content menu menu-lg bg-base-100 rounded-box z-10 w-52 p-2 shadow">
+          <li>
+            <button class="link" (click)="closeDropDownMenu()" routerLink="/users/orders">Мої замовлення</button>
+          </li>
+          <li>
+            <button class="link" (click)="logout()">Вихід</button>
+          </li>
+        </ul>
+      } @else {
+        <ul class="dropdown-content menu menu-lg bg-base-100 rounded-box z-10 w-52 p-2 shadow">
+          <li>
+            <button class="link" (click)="login()">Увійти</button>
+          </li>
+        </ul>
+      }
+      @if (this.isConnected()) {
+        <ul class="dropdown-content menu menu-lg bg-base-100 rounded-box z-10 w-52 p-2 shadow">
+          <li>
+            <button class="link" (click)="closeDropDownMenu()" routerLink="/users/orders">Мої замовлення</button>
+          </li>
+          <li>
+            <button class="link" (click)="logout()">Вихід</button>
+          </li>
+        </ul>
+      } @else {
+        <ul class="dropdown-content menu menu-lg bg-base-100 rounded-box z-10 w-52 p-2 shadow">
+          <li>
+            <button class="link" (click)="login()">Увійти</button>
+          </li>
+        </ul>
+      }
     </div>
     <div class="dropdown dropdown-end me-2" routerLink="/cart">
       <div tabindex="0" role="button">

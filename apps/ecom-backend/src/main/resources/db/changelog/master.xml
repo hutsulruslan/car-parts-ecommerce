@@ -23,5 +23,6 @@
   <include file="/db/changelog/00000000000010_payment.xml" relativeToChangelogFile="false"/>
   <include file="/db/changelog/00000000000011_delivery.xml" relativeToChangelogFile="false"/>
   <include file="/db/changelog/00000000000012_audit_log.xml" relativeToChangelogFile="false"/>
+  <include file="/db/changelog/00000000000014-drop-category-fk-column.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>
