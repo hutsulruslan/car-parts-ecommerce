@@ -1,1 +1,45 @@
-<p>create-subcategory works!</p>
+<div class="grid grid-cols-3">
+  <div></div>
+  <form id="createForm" (ngSubmit)="create()" [formGroup]="createForm" class="space-y-4">
+    <h1 class="text-lg font-bold">Додати підкатегорію</h1>
+
+    <!-- Назва -->
+    <label class="form-control w-full">
+      <div class="label">
+        <span class="label-text">Назва</span>
+      </div>
+      <input type="text" placeholder="Назва підкатегорії" class="input input-bordered w-full"
+             formControlName="name" [class.input-error]="name.invalid && !name.untouched"/>
+      <div class="label">
+        <span class="label-text-alt text-red-600" *ngxControlError="name; track: 'required'">
+          Ім'я обов'язкове
+        </span>
+      </div>
+    </label>
+
+    <!-- Категорія -->
+    <label class="form-control w-full">
+      <div class="label">
+        <span class="label-text">Категорія</span>
+      </div>
+      <select class="select select-bordered w-full" formControlName="category">
+        <option disabled selected>Виберіть категорію</option>
+        @if (categoriesQuery.isSuccess()) {
+          @for (category of categoriesQuery.data()!.content; track category.publicId) {
+            <option value="{{category.publicId}}+{{category.name}}">{{ category.name }}</option>
+          }
+        }
+      </select>
+      <div class="label"></div>
+    </label>
+
+    <!-- Кнопка -->
+    <button type="submit" class="btn btn-primary w-full" [disabled]="createForm.invalid">
+      @if (loading) {
+        <span class="loading loading-spinner"></span>
+      }
+      Додати підкатегорію
+    </button>
+  </form>
+  <div></div>
+</div>

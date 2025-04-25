@@ -13,7 +13,7 @@ export interface ProductCategory {
 export interface ProductSubCategory {
   publicId?: string;
   name: string;
-  parentCategory: ProductCategory;
+  category: ProductCategory;
 }
 
 export interface ProductPicture {
@@ -38,4 +38,24 @@ export interface Product extends BaseProduct {
 
 export type CreateCategoryFormContent = {
   name: FormControl<string>;
+}
+
+export type CreateBrandFormContent = {
+  name: FormControl<string>;
+}
+
+export type CreateSubCategoryFormContent = {
+  name: FormControl<string>;
+  category: FormControl<string>;
+}
+
+export type CreateProductFormContent = {
+  brand: FormControl<string>,
+  subCategory: FormControl<string>,
+  description: FormControl<string>,
+  name: FormControl<string>,
+  price: FormControl<number>,
+  featured: FormControl<boolean>,
+  pictures: FormControl<ProductPicture[]>,
+  stock: FormControl<number>
 }

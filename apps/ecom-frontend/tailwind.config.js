@@ -10,8 +10,8 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      'sans': 'Inter var, ui-sans-serif, system-ui',
-      'serif': 'Inter var, ui-sans-serif, system-ui',
+      sans: 'Inter var, ui-sans-serif, system-ui',
+      serif: 'Inter var, ui-sans-serif, system-ui',
     },
     fontSize: {
       sm: '0.875rem',
@@ -23,24 +23,24 @@ module.exports = {
       '5xl': '3.052rem',
     },
     extend: {},
-    daisyui: {
-      themes: [
-        {
-         'fantasy': {
+  },
+  daisyui: {
+    themes: [
+      {
+        fantasy: {
           primary: '#0000ff',
           'primary-content': 'white',
           secondary: '#F6F6F6',
-          netural: '#E8E8E8',
-         },
+          neutral: '#E8E8E8',
         },
-      ],
-      base: true,
-      styled: true,
-      utils: true,
-      prefix: '',
-      logs: true,
-      themeRoot: ':root',
-    },
+      },
+    ],
+    base: true,
+    styled: true,
+    utils: true,
+    prefix: '',
+    logs: true,
+    themeRoot: ':root'
   },
   plugins: [
     require('@tailwindcss/typography'),

@@ -1,1 +1,53 @@
-<p>admin-subcategories works!</p>
+<div class="w-full flex justify-between items-center">
+  <div>
+    <h1 class="text-2xl font-bold">Підкатегорії товарів</h1>
+    <div>Додати та видалити підкатегорії</div>
+  </div>
+  <button class="btn btn-primary" routerLink="/admin/subcategories/create">
+    Додати пдкатегорію
+  </button>
+</div>
+<div class="border-t w-full border-solid border-gray-300 mt-3 mb-5"></div>
+@if(subCategoriesQuery.isSuccess() && subCategoriesQuery.data()!.content.length !== 0) {
+  <div class="overflow-x-auto border border-gray-300 rounded-md">
+    <table class="table table-lg table-zebra">
+      <thead class="border-gray-300">
+      <tr class="border-gray-300">
+        <th></th>
+        <th>Public Id</th>
+        <th>Назва</th>
+        <th>Категорія</th>
+        <th>Дії</th>
+      </tr>
+      </thead>
+      <tbody class="border-0">
+        @for(subCategory of subCategoriesQuery.data()!.content; track subCategory.publicId; let i = $index) {
+          <tr class="border-gray-300">
+            <th>{{ i }}</th>
+            <td>{{ subCategory.publicId }}</td>
+            <td>{{ subCategory.name }}</td>
+            <td>{{subCategory.category.name}}</td>
+            <td>
+              <button class="btn btn-secondary btn-sm" (click)="deleteSubCategory(subCategory.publicId!)">
+                Видалити
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+} @else if (subCategoriesQuery.isPending()){
+  <div class="flex w-full justify-center">
+    <span class="loading loading-spinner loading-lg"></span>
+  </div>
+} @else if (subCategoriesQuery.isError()){
+  <div class="alert alert-error">
+    <span>Помилка! Не вдалося завантажити підкатегорії.</span>
+  </div>
+} @else if (subCategoriesQuery.data()!.content.length === 0){
+  <div role="alert" class="alert alert-info">
+    <fa-icon [icon]="['fas', 'circle-exclamation']" size="2x"></fa-icon>
+    <span>Ще не додано жодної підкатегорії.</span>
+  </div>
+}

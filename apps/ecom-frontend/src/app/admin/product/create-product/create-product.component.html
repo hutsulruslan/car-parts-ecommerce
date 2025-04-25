@@ -1,0 +1,124 @@
+<div class="grid grid-cols-3">
+  <div></div>
+  <form id="createForm" (ngSubmit)="create()" [formGroup]="createForm">
+    <h1 class="text-lg font-bold">Створити новий товар</h1>
+    <label class="form-control w-full">
+      <div class="label">
+        <span class="label-text">Назва</span>
+      </div>
+      <input type="text" placeholder="Введіть назву"
+             class="input input-bordered w-full" formControlName="name"
+             [class.input-error]="name.invalid && !name.untouched" />
+      <div class="label">
+        <span class="label-text-alt text-red-600"
+              *ngxControlError="name; track:'required'">
+          Назва обов'язкова
+        </span>
+      </div>
+    </label>
+    <label class="form-control w-full">
+      <div class="label">
+        <span class="label-text">Бренд</span>
+      </div>
+      <select class="select select-bordered w-full" formControlName="brand">
+        <option disabled selected>Виберіть бренд</option>
+        @if (brandsQuery.isSuccess()) {
+          @for (brand of brandsQuery.data()!.content; track brand.publicId) {
+            <option value="{{brand.publicId}}+{{brand.name}}">{{ brand.name }}</option>
+          }
+        }
+      </select>
+      <div class="label"></div>
+    </label>
+    <label class="form-control w-full">
+      <div class="label">
+        <span class="label-text">Опис товару</span>
+      </div>
+      <textarea placeholder="Введіть опис сюди"
+                class="textarea textarea-bordered w-full" formControlName="description"
+                [class.input-error]="description.invalid && !description.untouched"> </textarea>
+      <div class="label">
+        <span class="label-text-alt text-red-600"
+              *ngxControlError="description; track:'required'">
+          Опис обов'язковий
+        </span>
+      </div>
+    </label>
+    <label class="form-control w-full">
+      <div class="label">
+        <span class="label-text">Ціна</span>
+      </div>
+      <input type="number" placeholder="Введіть ціну"
+             class="input input-bordered w-full" formControlName="price"
+             [class.input-error]="price.invalid && !price.untouched" />
+      <div class="label">
+        <span class="label-text-alt text-red-600"
+              *ngxControlError="price; track:'required'">
+          Ціна обов'язкова
+        </span>
+      </div>
+    </label>
+    <label class="form-control w-full">
+      <div class="label">
+        <span class="label-text">Кількість в наявності</span>
+      </div>
+      <input type="number" placeholder="Введіть кількість"
+             class="input input-bordered w-full" formControlName="stock"
+             [class.input-error]="stock.invalid && !stock.untouched" />
+      <div class="label">
+        <span class="label-text-alt text-red-600"
+              *ngxControlError="stock; track:'required'">
+          Кількість обов'язкова
+        </span>
+      </div>
+    </label>
+    <label class="form-control w-full">
+      <div class="label">
+        <span class="label-text">Підкатегорія</span>
+      </div>
+      <select class="select select-bordered w-full" formControlName="subCategory">
+        <option disabled selected>Виберіть підкатегорію</option>
+        @if (subCategoriesQuery.isSuccess()) {
+          @for (subCategory of subCategoriesQuery.data()!.content; track subCategory.publicId) {
+            <option value="{{subCategory.publicId}}+{{subCategory.name}}+{{subCategory.category.publicId}}+{{subCategory.category.name}}">{{ subCategory.name }} ({{subCategory.category.name}})</option>
+          }
+        }
+      </select>
+      <div class="label"></div>
+    </label>
+    <label class="form-control w-full">
+      <div class="label">
+        <span class="label-text">Фото товару</span>
+      </div>
+      <input type="file"
+             class="file-input w-full" multiple formControlName="pictures"
+             (change)="onUploadNewPicture($event.target)"
+             [class.input-error]="brand.invalid && !brand.untouched" />
+      <div class="label">
+        @if (productPictures.length === 0 && pictures.invalid && !pictures.untouched) {
+          <span class="label-text-alt text-red-600">
+          Хоча б одне фото є обов'язковим
+        </span>
+        }
+      </div>
+    </label>
+    <div class="form-control w-full">
+      <label class="label cursor-pointer">
+        <span class="label-text">Рекомендований товар</span>
+      </label>
+      <div class="flex justify-center">
+        <input type="checkbox" checked="checked" class="checkbox checkbox-primary"
+               formControlName="featured">
+      </div>
+      <div class="label"></div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-wide w-full"
+            [disabled]="createForm.invalid">
+      @if(loading) {
+        <span class="loading-spinner loading"></span>
+      }
+      Створити товар
+    </button>
+  </form>
+  <div></div>
+</div>
