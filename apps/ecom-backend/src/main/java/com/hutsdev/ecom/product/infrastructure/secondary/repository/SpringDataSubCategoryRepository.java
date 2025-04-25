@@ -37,12 +37,12 @@ public class SpringDataSubCategoryRepository implements SubCategoryRepository {
   public SubCategory save(SubCategory subCategoryToCreate) {
     SubCategoryEntity entityToSave = SubCategoryEntity.from(subCategoryToCreate);
     Optional<CategoryEntity> categoryOpt = jpaCategoryRepository.findByPublicId(
-      subCategoryToCreate.getParentCategory().getPublicId().value()
+      subCategoryToCreate.getCategory().getPublicId().value()
     );
 
     CategoryEntity category = categoryOpt.orElseThrow(() ->
       new EntityNotFoundException(String.format(
-        "No Category found with publicId %s", subCategoryToCreate.getParentCategory().getPublicId()
+        "No Category found with publicId %s", subCategoryToCreate.getCategory().getPublicId()
       ))
     );
 

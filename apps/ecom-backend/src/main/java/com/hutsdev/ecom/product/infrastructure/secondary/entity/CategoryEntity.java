@@ -56,9 +56,9 @@ public class CategoryEntity extends AbstractAuditingEntity<Long> {
 
   public static Category to(CategoryEntity categoryEntity) {
     return CategoryBuilder.category()
+      .dbId(categoryEntity.getId())
       .name(new CategoryName(categoryEntity.getName()))
       .publicId(new PublicId(categoryEntity.getPublicId()))
-      .dbId(categoryEntity.getId())
       .build();
   }
 

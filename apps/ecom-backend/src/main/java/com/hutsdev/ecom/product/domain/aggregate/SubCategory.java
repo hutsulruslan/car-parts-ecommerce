@@ -11,23 +11,23 @@ import java.util.UUID;
 public class SubCategory {
 
   private final SubCategoryName name;
-  private final Category parentCategory;
+  private final Category category;
 
   private Long dbId;
   private PublicId publicId;
 
-  public SubCategory(SubCategoryName name, Category parentCategory,
+  public SubCategory(SubCategoryName name, Category category,
                      Long dbId, PublicId publicId) {
-    assertMandatoryFields(name, parentCategory);
+    assertMandatoryFields(name, category);
     this.name = name;
-    this.parentCategory = parentCategory;
+    this.category = category;
     this.publicId = publicId;
     this.dbId = dbId;
   }
 
-  private void assertMandatoryFields(SubCategoryName name, Category parentCategory) {
+  private void assertMandatoryFields(SubCategoryName name, Category category) {
     Assert.notNull("name", name);
-    Assert.notNull("parentCategory", parentCategory);
+    Assert.notNull("category", category);
   }
 
   public void initDefaultFields() {
@@ -38,8 +38,8 @@ public class SubCategory {
     return name;
   }
 
-  public Category getParentCategory() {
-    return parentCategory;
+  public Category getCategory() {
+    return category;
   }
 
   public Long getDbId() {
