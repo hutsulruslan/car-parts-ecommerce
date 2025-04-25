@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+import static com.hutsdev.ecom.product.infrastructure.primary.ProductAdminResource.ROLE_ADMIN;
+
 @RestController
 @RequestMapping("/api/brands")
 public class BrandResource {
@@ -28,14 +30,14 @@ public class BrandResource {
   }
 
   @PostMapping
-  @PreAuthorize("hasAnyRole('" + ProductAdminResource.ROLE_ADMIN + "')")
+  @PreAuthorize("hasAnyRole('" + ROLE_ADMIN + "')")
   public ResponseEntity<RestBrand> save(@RequestBody RestBrand restBrand) {
     var brand = productsApplicationService.createBrand(RestBrand.toDomain(restBrand));
     return ResponseEntity.ok(RestBrand.fromDomain(brand));
   }
 
   @DeleteMapping
-  @PreAuthorize("hasAnyRole('" + ProductAdminResource.ROLE_ADMIN + "')")
+  @PreAuthorize("hasAnyRole('" + ROLE_ADMIN + "')")
   public ResponseEntity<UUID> delete(@RequestParam("publicId") UUID id) {
     try {
       var deleted = productsApplicationService.deleteBrand(new PublicId(id));

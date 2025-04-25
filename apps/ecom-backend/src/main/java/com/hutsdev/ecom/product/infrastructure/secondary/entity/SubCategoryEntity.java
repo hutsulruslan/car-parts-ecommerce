@@ -66,7 +66,7 @@ public class SubCategoryEntity extends AbstractAuditingEntity<Long> {
       .dbId(subCategoryEntity.getId())
       .name(new SubCategoryName(subCategoryEntity.getName()))
       .publicId(new PublicId(subCategoryEntity.getPublicId()))
-      .parentCategory(CategoryEntity.to(subCategoryEntity.getCategory()))
+      .category(CategoryEntity.to(subCategoryEntity.getCategory()))
       .build();
   }
 

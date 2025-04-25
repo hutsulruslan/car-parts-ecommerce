@@ -7,6 +7,8 @@ import {CreateSubcategoryComponent} from "./admin/subcategory/create-subcategory
 import {AdminSubcategoriesComponent} from "./admin/subcategory/admin-subcategories/admin-subcategories.component";
 import {AdminBrandsComponent} from "./admin/brand/admin-brands/admin-brands.component";
 import {CreateBrandComponent} from "./admin/brand/create-brand/create-brand.component";
+import {AdminProductsComponent} from "./admin/product/admin-products/admin-products.component";
+import {CreateProductComponent} from "./admin/product/create-product/create-product.component";
 
 export const appRoutes: Route[] = [
   {
@@ -52,6 +54,22 @@ export const appRoutes: Route[] = [
   {
     path: 'admin/brands/create',
     component: CreateBrandComponent,
+    canActivate: [roleCheckGuard],
+    data: {
+      authorities: ['ROLE_ADMIN']
+    },
+  },
+  {
+    path: 'admin/products/list',
+    component: AdminProductsComponent,
+    canActivate: [roleCheckGuard],
+    data: {
+      authorities: ['ROLE_ADMIN']
+    },
+  },
+  {
+    path: 'admin/products/create',
+    component: CreateProductComponent,
     canActivate: [roleCheckGuard],
     data: {
       authorities: ['ROLE_ADMIN']

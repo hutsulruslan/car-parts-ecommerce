@@ -1,6 +1,5 @@
 package com.hutsdev.ecom.product.infrastructure.primary;
 
-import com.hutsdev.ecom.product.domain.aggregate.Brand;
 import com.hutsdev.ecom.product.domain.aggregate.Product;
 import com.hutsdev.ecom.product.domain.aggregate.ProductBuilder;
 import com.hutsdev.ecom.product.domain.vo.*;

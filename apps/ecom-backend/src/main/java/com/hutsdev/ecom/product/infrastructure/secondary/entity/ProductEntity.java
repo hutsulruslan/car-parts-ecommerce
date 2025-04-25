@@ -71,7 +71,7 @@ public class ProductEntity extends AbstractAuditingEntity<Long> {
     this.subCategory = subCategory;
   }
 
-  public static ProductEntity from(Product product) {
+  public static ProductEntity from(Product product, BrandEntity brandEntity, SubCategoryEntity subCategoryEntity) {
     ProductEntityBuilder productEntityBuilder = ProductEntityBuilder.productEntity();
 
     if(product.getDbId() != null) {
@@ -79,12 +79,12 @@ public class ProductEntity extends AbstractAuditingEntity<Long> {
     }
 
     return productEntityBuilder
-      .brand(BrandEntity.from(product.getBrand()))
+      .brand(brandEntity)
       .description(product.getDescription().value())
       .name(product.getName().value())
       .price(product.getPrice().value())
       .publicId(product.getPublicId().value())
-      .subCategory(SubCategoryEntity.from(product.getSubCategory()))
+      .subCategory(subCategoryEntity)
       .pictures(PictureEntity.from(product.getPictures()))
       .featured(product.getFeature())
       .nbInStock(product.getNbInStock())
@@ -102,7 +102,6 @@ public class ProductEntity extends AbstractAuditingEntity<Long> {
       .pictures(PictureEntity.to(productEntity.getPictures()))
       .featured(productEntity.isFeatured())
       .nbInStock(productEntity.getNbInStock())
-      .dbId(productEntity.getId())
       .build();
   }
 

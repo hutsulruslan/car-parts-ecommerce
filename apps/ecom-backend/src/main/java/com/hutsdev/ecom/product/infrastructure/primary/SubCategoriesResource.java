@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+import static com.hutsdev.ecom.product.infrastructure.primary.ProductAdminResource.ROLE_ADMIN;
+
 @RestController
 @RequestMapping("/api/subcategories")
 public class SubCategoriesResource {
@@ -28,14 +30,14 @@ public class SubCategoriesResource {
   }
 
   @PostMapping
-  @PreAuthorize("hasAnyRole('" + ProductAdminResource.ROLE_ADMIN + "')")
+  @PreAuthorize("hasAnyRole('" + ROLE_ADMIN + "')")
   public ResponseEntity<RestSubCategory> save(@RequestBody RestSubCategory dto) {
     var subCategory = productsApplicationService.createSubCategory(RestSubCategory.toDomain(dto));
     return ResponseEntity.ok(RestSubCategory.fromDomain(subCategory));
   }
 
   @DeleteMapping
-  @PreAuthorize("hasAnyRole('" + ProductAdminResource.ROLE_ADMIN + "')")
+  @PreAuthorize("hasAnyRole('" + ROLE_ADMIN + "')")
   public ResponseEntity<UUID> delete(@RequestParam("publicId") UUID id) {
     try {
       var deleted = productsApplicationService.deleteSubCategory(new PublicId(id));

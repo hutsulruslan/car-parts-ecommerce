@@ -1,1 +1,51 @@
-<p>admin-brands works!</p>
+<div class="w-full flex justify-between items-center">
+  <div>
+    <h1 class="text-2xl font-bold">Бренди товарів</h1>
+    <div>Додати та видалити бренд</div>
+  </div>
+  <button class="btn btn-primary" routerLink="/admin/brands/create">
+    Додати бренд
+  </button>
+</div>
+<div class="border-t w-full border-solid border-gray-300 mt-3 mb-5"></div>
+@if(brandsQuery.isSuccess() && brandsQuery.data()!.content.length !== 0) {
+  <div class="overflow-x-auto border border-gray-300 rounded-md">
+    <table class="table table-lg table-zebra">
+      <thead class="border-gray-300">
+      <tr class="border-gray-300">
+        <th></th>
+        <th>Public Id</th>
+        <th>Назва</th>
+        <th>Дії</th>
+      </tr>
+      </thead>
+      <tbody class="border-0">
+        @for(brand of brandsQuery.data()!.content; track brand.publicId; let i = $index) {
+          <tr class="border-gray-300">
+            <th>{{ i }}</th>
+            <td>{{brand.publicId}}</td>
+            <td>{{brand.name}}</td>
+            <td>
+              <div (click)="deleteBrand(brand.publicId!)" class="btn btn-secondary btn-sm">
+                Видалити
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+} @else if (brandsQuery.isPending()){
+  <div class="flex w-full justify-center">
+    <span class="loading loading-spinner loading-lg"></span>
+  </div>
+} @else if (brandsQuery.isError()){
+  <div class="alert alert-error">
+    <span>Помилка! Не вдалося завантажити бренди.</span>
+  </div>
+} @else if (brandsQuery.data()!.content.length === 0){
+  <div role="alert" class="alert alert-info">
+    <fa-icon [icon]="['fas', 'circle-exclamation']" size="2x"></fa-icon>
+    <span>Ще не додано жодного бренду.</span>
+  </div>
+}
