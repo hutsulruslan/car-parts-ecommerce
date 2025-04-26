@@ -14,4 +14,5 @@ public interface ProductRepository {
 
   int delete(PublicId publicId);
 
+  Page<Product> findAllFeaturedProduct(Pageable pageable);
 }
