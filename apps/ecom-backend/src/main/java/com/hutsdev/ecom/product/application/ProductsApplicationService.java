@@ -8,10 +8,7 @@ import com.hutsdev.ecom.product.domain.repository.BrandRepository;
 import com.hutsdev.ecom.product.domain.repository.CategoryRepository;
 import com.hutsdev.ecom.product.domain.repository.ProductRepository;
 import com.hutsdev.ecom.product.domain.repository.SubCategoryRepository;
-import com.hutsdev.ecom.product.domain.service.BrandCRUD;
-import com.hutsdev.ecom.product.domain.service.CategoryCRUD;
-import com.hutsdev.ecom.product.domain.service.ProductCRUD;
-import com.hutsdev.ecom.product.domain.service.SubCategoryCRUD;
+import com.hutsdev.ecom.product.domain.service.*;
 import com.hutsdev.ecom.product.domain.vo.PublicId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,12 +22,14 @@ public class ProductsApplicationService {
   private CategoryCRUD categoryCRUD;
   private SubCategoryCRUD subCategoryCRUD;
   private BrandCRUD brandCRUD;
+  private ProductShop productShop;
 
   public ProductsApplicationService(ProductRepository productRepository, CategoryRepository categoryRepository, SubCategoryRepository subCategoryRepository, BrandRepository brandRepository) {
     this.productCRUD = new ProductCRUD(productRepository);
     this.categoryCRUD = new CategoryCRUD(categoryRepository);
     this.subCategoryCRUD = new SubCategoryCRUD(subCategoryRepository);
     this.brandCRUD = new BrandCRUD(brandRepository);
+    this.productShop = new ProductShop(productRepository);
   }
 
   @Transactional
@@ -91,5 +90,10 @@ public class ProductsApplicationService {
   @Transactional(readOnly = true)
   public Page<Brand> findAllBrand(Pageable pageable) {
     return brandCRUD.findAll(pageable);
+  }
+
+  @Transactional(readOnly = true)
+  public Page<Product> getFeaturedProducts(Pageable pageable) {
+    return productShop.getFeaturedProducts(pageable);
   }
 }
