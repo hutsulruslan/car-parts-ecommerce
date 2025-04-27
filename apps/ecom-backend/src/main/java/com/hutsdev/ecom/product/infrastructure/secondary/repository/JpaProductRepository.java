@@ -15,4 +15,6 @@ public interface JpaProductRepository extends JpaRepository<ProductEntity, Long>
   int deleteByPublicId(UUID publicId);
 
   Page<ProductEntity> findAllByFeaturedTrue(Pageable pageable);
+
+  Page<ProductEntity> findBySubCategoryPublicIdAndPublicIdNot(Pageable pageable, UUID subcategoryPublicId, UUID excludedProductPublicId);
 }
