@@ -84,4 +84,15 @@ public class SpringDataProductRepository implements ProductRepository {
   public Page<Product> findAllFeaturedProduct(Pageable pageable) {
     return jpaProductRepository.findAllByFeaturedTrue(pageable).map(ProductEntity::to);
   }
+
+  @Override
+  public Optional<Product> findOne(PublicId publicId) {
+    return jpaProductRepository.findByPublicId(publicId.value()).map(ProductEntity::to);
+  }
+
+  @Override
+  public Page<Product> findBySubCategoryExcludingOne(Pageable pageable, PublicId subCategoryPublicId, PublicId productPublicId) {
+    return jpaProductRepository.findBySubCategoryPublicIdAndPublicIdNot(pageable, subCategoryPublicId.value(), productPublicId.value())
+      .map(ProductEntity::to);
+  }
 }

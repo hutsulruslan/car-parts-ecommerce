@@ -16,4 +16,14 @@ export class UserProductService {
     const params = createPaginationOption(pageRequest);
     return this.http.get<Page<Product>>(`${environment.apiUrl}/products-shop/featured`, {params});
   }
+
+  findOneByPublicId(publicId: string): Observable<Product> {
+    return this.http.get<Product>(`${environment.apiUrl}/products-shop/find-one`, {params:{publicId}});
+  }
+
+  findRelatedProduct(pageRequest: Pagination, productPublicId: string): Observable<Page<Product>> {
+    let params = createPaginationOption(pageRequest);
+    params = params.append('publicId', productPublicId);
+    return this.http.get<Page<Product>>(`${environment.apiUrl}/products-shop/related`, {params});
+  }
 }

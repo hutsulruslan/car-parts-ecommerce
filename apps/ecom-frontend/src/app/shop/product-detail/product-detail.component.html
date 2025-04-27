@@ -1,0 +1,55 @@
+@if(productQuery.isSuccess()) {
+  <div class="flex flex-col lg:flex-row justify-center items-center w-full">
+    <div class="lg:me-5">
+      <img
+        [src]="'data:' + productQuery.data().pictures[0].mimeType + ';base64,' + productQuery.data().pictures[0].file"
+        width="500px"
+        alt="{{ productQuery.data().name }}"
+        class="max-w-full lg:max-w-none"
+      />
+    </div>
+    <div class="w-full lg:w-auto">
+      <h1 class="text-3xl font-bold">{{productQuery.data().name}}</h1>
+      @if(productQuery.data().nbInStock! > 0) {
+        <div class="text-green-500 text-lg">В наявності</div>
+      } @else {
+        <div class="text-red-500 text-lg">Немає в наявності</div>
+      }
+      @if (productQuery.data().featured) {
+        <div class="rounded-md border w-32 p-2 text-center border-black my-5">
+          Кращий вибір
+        </div>
+      }
+      <div class="text-2xl my-5">
+        <span class="line-through me-2">{{productQuery.data().price + 200 | currency:'UAH':'symbol-narrow'}}</span>
+        <span class="me-2">{{productQuery.data().price | currency:'UAH':'symbol-narrow'}}</span>
+      </div>
+      <div>
+        Бренд
+        <span class="font-bold">{{productQuery.data().brand.name}}</span>
+      </div>
+      <div class="my-5 w-96">
+        <h2 class="text-xl font-bold">Опис товару</h2>
+        {{productQuery.data().description}}
+      </div>
+      <button class="btn btn-primary mt-5 w-full lg:w-64"
+              [disabled]="productQuery.data().nbInStock<=0">
+        <fa-icon class="me-1" [icon]="['fas', 'shopping-cart']"></fa-icon>
+        Додати в кошик
+      </button>
+    </div>
+  </div>
+} @else if (productQuery.isPending()) {
+  <div class="flex w-full justify-center">
+    <span class="loading loading-spinner loading-lg"></span>
+  </div>
+}
+<div class="mt-10">
+  <h2 class="text-2xl font-bold mb-7 ms-4 sm:ms-0">Також вас можуть зацікавити</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2
+  md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 sm:gap-5">
+    @for(product of relatedProductQuery.data()?.content; track product.publicId){
+      <ecom-product-card [product]="product"></ecom-product-card>
+    }
+  </div>
+</div>
