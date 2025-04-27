@@ -9,6 +9,7 @@ import {AdminBrandsComponent} from "./admin/brand/admin-brands/admin-brands.comp
 import {CreateBrandComponent} from "./admin/brand/create-brand/create-brand.component";
 import {AdminProductsComponent} from "./admin/product/admin-products/admin-products.component";
 import {CreateProductComponent} from "./admin/product/create-product/create-product.component";
+import {ProductDetailComponent} from "./shop/product-detail/product-detail.component";
 
 export const appRoutes: Route[] = [
   {
@@ -79,4 +80,8 @@ export const appRoutes: Route[] = [
     path: '',
     component: HomeComponent,
   },
+  {
+    path: 'product/:publicId',
+    component: ProductDetailComponent
+  }
 ];

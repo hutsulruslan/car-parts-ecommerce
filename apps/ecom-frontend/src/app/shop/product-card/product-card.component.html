@@ -1,23 +1,20 @@
-<a class="flex justify-start cursor-pointer" [routerLink]="['/product', product().publicId]">
-  <div class="flex flex-col justify-center rounded-xl w-full min-h-[400px] h-full shadow-xl">
-    <figure class="flex justify-center items-center h-full">
-      <img
-        [src]="'data:' + product().pictures[0].mimeType + ';base64,' + product().pictures[0].file"
-        [width]="250"
-        [height]="250"
-        alt="{{ product().name }}"
-      />
-    </figure>
-    <div class="p-5 justify-end">
-      <div class="text-sm">{{product().brand.name}}</div>
-      <h2 class="card-title w-full truncate">
-        <div class="truncate">{{product().name}}</div>
-        <div class="badge badge-secondary">НОВИНКА</div>
-      </h2>
-      <div>
-        <span class="line-through me-2">{{product().price + 200 | currency:'UAH':'symbol-narrow'}}</span>
-        <span class="me-2">{{product().price | currency:'UAH':'symbol-narrow'}}</span>
-      </div>
+<a class="flex flex-col justify-start rounded-xl w-full shadow-xl overflow-hidden h-full" [routerLink]="['/product', product().publicId]">
+  <figure class="w-full aspect-[4/5] flex justify-center items-center bg-white">
+    <img
+      [src]="'data:' + product().pictures[0].mimeType + ';base64,' + product().pictures[0].file"
+      alt="{{ product().name }}"
+      class="w-full h-full object-cover"
+    />
+  </figure>
+  <div class="p-4 flex flex-col justify-between flex-grow">
+    <div class="text-sm">{{ product().brand.name }}</div>
+    <h2 class="card-title w-full truncate">
+      <div class="truncate">{{ product().name }}</div>
+      <div class="badge badge-secondary">НОВИНКА</div>
+    </h2>
+    <div>
+      <span class="line-through me-2">{{ (product().price + 200) | currency:'₴' }}</span>
+      <span class="me-2">{{ product().price | currency:'₴' }}</span>
     </div>
   </div>
 </a>
