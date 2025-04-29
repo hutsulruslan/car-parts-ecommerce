@@ -4,6 +4,10 @@ import {RouterLink} from "@angular/router";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {Oauth2Service} from "../../auth/oauth2.service";
 import {ClickOutside} from "ngxtension/click-outside";
+import {UserProductService} from "../../shared/service/user-product.service";
+import {injectQuery} from "@tanstack/angular-query-experimental";
+import {lastValueFrom} from "rxjs";
+import {ProductCategory} from "../../admin/model/product.model";
 
 @Component({
   selector: 'ecom-navbar',
@@ -14,8 +18,29 @@ import {ClickOutside} from "ngxtension/click-outside";
 export class NavbarComponent {
 
   oauth2service = inject(Oauth2Service);
+  productsService = inject(UserProductService);
+
+  hoveredCategory: ProductCategory | null = null;
+  isMenuHovered = false;
 
   connectedUserQuery = this.oauth2service.connectedUserQuery;
+
+  categoriesQuery = injectQuery(() => ({
+    queryKey: ['categories'],
+    queryFn: () => lastValueFrom(this.productsService.findAllCategories())
+  }));
+
+  subcategoriesQuery = injectQuery(() => ({
+    queryKey: ['subcategories'],
+    queryFn: () => lastValueFrom(this.productsService.findAllSubCategories())
+  }));
+
+  get subcategoriesForHoveredCategory() {
+    if (!this.hoveredCategory || !this.subcategoriesQuery.data()?.content) {
+      return [];
+    }
+    return this.subcategoriesQuery.data()?.content.filter(sub => sub.category.publicId === this.hoveredCategory!.publicId);
+  }
 
   login(): void {
     this.closeDropDownMenu();

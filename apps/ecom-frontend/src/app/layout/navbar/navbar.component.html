@@ -9,12 +9,43 @@
   <div class="navbar-center flex">
     <div class="menu menu-sm sm:menu-lg menu-horizontal px-1">
       <li><a href="/">Головна сторінка</a></li>
-      <li>
+      <li class="relative z-30">
         <details #productsMenu>
           <summary>Товари</summary>
-          <ul class="z-30">
-            <li><a href="/products">Усі товари</a></li>
-          </ul>
+          @if (categoriesQuery.isSuccess() && subcategoriesQuery.isSuccess()) {
+            <div class="absolute left-0 top-full mt-2 bg-base-100 shadow-xl rounded-xl p-4 flex"
+                 (mouseenter)="isMenuHovered = true"
+                 (mouseleave)="isMenuHovered = false"
+                 (clickOutside)="closeMenu(productsMenu)">
+
+              <!-- Ліва колонка: Категорії -->
+              <ul class="flex flex-col gap-2 w-[250px]">
+                @for (category of categoriesQuery.data().content; track category.publicId) {
+                  <li
+                    class="font-bold text-primary cursor-pointer hover:underline"
+                    (mouseenter)="hoveredCategory = category">
+                    {{ category.name }}
+                  </li>
+                }
+              </ul>
+
+              <!-- Права колонка: Підкатегорії -->
+              @if (hoveredCategory) {
+                <ul class="flex flex-col gap-2 w-[250px] ms-4">
+                  @for (subCategory of subcategoriesForHoveredCategory; track subCategory.publicId) {
+                    <li>
+                      <a class="block hover:underline"
+                         [routerLink]="['products']"
+                         [queryParams]="{subCategory: subCategory.publicId}"
+                         (click)="closeMenu(productsMenu)">
+                        {{ subCategory.name }}
+                      </a>
+                    </li>
+                  }
+                </ul>
+              }
+            </div>
+          }
         </details>
       </li>
       @if (connectedUserQuery?.status() === "success"
