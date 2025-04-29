@@ -1,6 +1,7 @@
 package com.hutsdev.ecom.product.infrastructure.primary;
 
 import com.hutsdev.ecom.product.application.ProductsApplicationService;
+import com.hutsdev.ecom.product.domain.aggregate.FilterQueryBuilder;
 import com.hutsdev.ecom.product.domain.aggregate.Product;
 import com.hutsdev.ecom.product.domain.vo.PublicId;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -62,5 +64,32 @@ public class ProductShopResource {
     } catch (EntityNotFoundException enfe) {
       return ResponseEntity.badRequest().build();
     }
+  }
+
+  @GetMapping("/filter")
+  public ResponseEntity<Page<RestProduct>> filter(
+    Pageable pageable,
+    @RequestParam("subCategoryId") UUID subCategoryId,
+    @RequestParam(value = "brandId", required = false) List<UUID> brandIds
+  ) {
+    FilterQueryBuilder filterQueryBuilder = FilterQueryBuilder
+      .filterQuery()
+      .subCategoryId(new PublicId(subCategoryId));
+
+    if (brandIds != null && !brandIds.isEmpty()) {
+      filterQueryBuilder.brandPublicIds(
+        brandIds.stream().map(PublicId::new).toList()
+      );
+    }
+
+    Page<Product> products = productsApplicationService.filter(pageable, filterQueryBuilder.build());
+
+    PageImpl<RestProduct> restProducts = new PageImpl<>(
+      products.getContent().stream().map(RestProduct::fromDomain).toList(),
+      pageable,
+      products.getTotalElements()
+    );
+
+    return ResponseEntity.ok(restProducts);
   }
 }

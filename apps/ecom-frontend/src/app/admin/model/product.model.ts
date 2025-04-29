@@ -1,4 +1,4 @@
-import {FormControl} from "@angular/forms";
+import {FormControl, FormRecord} from "@angular/forms";
 
 export interface Brand {
   publicId?: string;
@@ -58,4 +58,21 @@ export type CreateProductFormContent = {
   featured: FormControl<boolean>,
   pictures: FormControl<ProductPicture[]>,
   stock: FormControl<number>
+}
+
+export interface ProductFilter {
+  brand?: string;
+  subCategory?: string | null;
+  sort: string[];
+}
+
+export type FilterProductsFormContent = {
+  sort: FormControl<string>;
+  brand: FormRecord<FormControl<boolean>>;
+}
+export interface ProductFilterForm {
+  brand?: {
+    [brandPublicId: string]: boolean;
+  } | undefined;
+  sort: string;
 }

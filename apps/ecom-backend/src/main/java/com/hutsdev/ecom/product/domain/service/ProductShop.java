@@ -1,5 +1,6 @@
 package com.hutsdev.ecom.product.domain.service;
 
+import com.hutsdev.ecom.product.domain.aggregate.FilterQuery;
 import com.hutsdev.ecom.product.domain.aggregate.Product;
 import com.hutsdev.ecom.product.domain.repository.ProductRepository;
 import com.hutsdev.ecom.product.domain.vo.PublicId;
@@ -31,5 +32,9 @@ public class ProductShop {
     } else {
       throw new EntityNotFoundException(String.format("No product found with id %s", productPublicId));
     }
+  }
+
+  public Page<Product> filter(Pageable pageable, FilterQuery query) {
+    return productRepository.findBySubCategoryAndBrands(pageable, query);
   }
 }
