@@ -28,4 +28,5 @@ public interface JpaProductRepository extends JpaRepository<ProductEntity, Long>
 """)
   Page<ProductEntity> findBySubCategoryAndBrandIn(Pageable pageable, UUID subCategoryId, List<UUID> brandIds);
 
+  List<ProductEntity> findAllByPublicIdIn(List<UUID> publicIds);
 }

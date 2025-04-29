@@ -111,4 +111,9 @@ public class ProductsApplicationService {
   public Page<Product> filter(Pageable pageable, FilterQuery query) {
     return productShop.filter(pageable, query);
   }
+
+  @Transactional(readOnly = true)
+  public List<Product> getProductsByPublicIdsIn(List<PublicId> publicIds) {
+    return productCRUD.findAllByPublicIdIn(publicIds);
+  }
 }

@@ -116,4 +116,11 @@ public class SpringDataProductRepository implements ProductRepository {
       .findBySubCategoryAndBrandIn(pageable, subCategoryId, brandIds)
       .map(ProductEntity::to);
   }
+
+  @Override
+  public List<Product> findByPublicIds(List<PublicId> publicIds) {
+    List<UUID> publicIdsUUID = publicIds.stream().map(PublicId::value).toList();
+    return jpaProductRepository.findAllByPublicIdIn(publicIdsUUID)
+      .stream().map(ProductEntity::to).toList();
+  }
 }

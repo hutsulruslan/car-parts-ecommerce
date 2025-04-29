@@ -6,6 +6,7 @@ import com.hutsdev.ecom.product.domain.vo.PublicId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -24,4 +25,6 @@ public interface ProductRepository {
   Page<Product> findBySubCategoryExcludingOne(Pageable pageable, PublicId subCategoryPublicId, PublicId productPublicId);
 
   Page<Product> findBySubCategoryAndBrands(Pageable pageable, FilterQuery filterQuery);
+
+  List<Product> findByPublicIds(List<PublicId> publicIds);
 }
