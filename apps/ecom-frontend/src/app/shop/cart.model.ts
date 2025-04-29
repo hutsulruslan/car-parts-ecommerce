@@ -18,6 +18,6 @@ export interface CartItem {
   publicId: string;
 }
 
-export interface StripeSession {
+export interface LiqPaySession {
   id: string;
 }
