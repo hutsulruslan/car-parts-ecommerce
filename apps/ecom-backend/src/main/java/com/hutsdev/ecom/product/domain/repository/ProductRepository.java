@@ -1,5 +1,6 @@
 package com.hutsdev.ecom.product.domain.repository;
 
+import com.hutsdev.ecom.product.domain.aggregate.FilterQuery;
 import com.hutsdev.ecom.product.domain.aggregate.Product;
 import com.hutsdev.ecom.product.domain.vo.PublicId;
 import org.springframework.data.domain.Page;
@@ -21,4 +22,6 @@ public interface ProductRepository {
   Optional<Product> findOne(PublicId publicId);
 
   Page<Product> findBySubCategoryExcludingOne(Pageable pageable, PublicId subCategoryPublicId, PublicId productPublicId);
+
+  Page<Product> findBySubCategoryAndBrands(Pageable pageable, FilterQuery filterQuery);
 }

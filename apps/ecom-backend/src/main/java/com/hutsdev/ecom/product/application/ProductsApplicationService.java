@@ -1,9 +1,6 @@
 package com.hutsdev.ecom.product.application;
 
-import com.hutsdev.ecom.product.domain.aggregate.Brand;
-import com.hutsdev.ecom.product.domain.aggregate.Category;
-import com.hutsdev.ecom.product.domain.aggregate.Product;
-import com.hutsdev.ecom.product.domain.aggregate.SubCategory;
+import com.hutsdev.ecom.product.domain.aggregate.*;
 import com.hutsdev.ecom.product.domain.repository.BrandRepository;
 import com.hutsdev.ecom.product.domain.repository.CategoryRepository;
 import com.hutsdev.ecom.product.domain.repository.ProductRepository;
@@ -15,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -107,5 +105,10 @@ public class ProductsApplicationService {
   @Transactional(readOnly = true)
   public Page<Product> findRelated(Pageable pageable, PublicId productPublicId) {
     return productShop.findRelated(pageable, productPublicId);
+  }
+
+  @Transactional(readOnly = true)
+  public Page<Product> filter(Pageable pageable, FilterQuery query) {
+    return productShop.filter(pageable, query);
   }
 }

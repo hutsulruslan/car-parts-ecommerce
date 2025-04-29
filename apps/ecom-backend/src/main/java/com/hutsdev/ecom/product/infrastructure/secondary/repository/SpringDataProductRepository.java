@@ -1,5 +1,6 @@
 package com.hutsdev.ecom.product.infrastructure.secondary.repository;
 
+import com.hutsdev.ecom.product.domain.aggregate.FilterQuery;
 import com.hutsdev.ecom.product.domain.aggregate.Picture;
 import com.hutsdev.ecom.product.domain.aggregate.Product;
 import com.hutsdev.ecom.product.domain.repository.ProductRepository;
@@ -50,7 +51,6 @@ public class SpringDataProductRepository implements ProductRepository {
     SubCategoryEntity subCategoryEntity = jpaSubCategoryRepository.findByPublicId(subCategoryPublicId)
       .orElseThrow(() -> new EntityNotFoundException("No SubCategory with Id " + subCategoryPublicId));
 
-    // ВАЖЛИВО: тут вже передаєш готові managed entity
     ProductEntity newProductEntity = ProductEntity.from(productToCreate, brandEntity, subCategoryEntity);
 
     ProductEntity savedProductEntity = jpaProductRepository.save(newProductEntity);
@@ -93,6 +93,27 @@ public class SpringDataProductRepository implements ProductRepository {
   @Override
   public Page<Product> findBySubCategoryExcludingOne(Pageable pageable, PublicId subCategoryPublicId, PublicId productPublicId) {
     return jpaProductRepository.findBySubCategoryPublicIdAndPublicIdNot(pageable, subCategoryPublicId.value(), productPublicId.value())
+      .map(ProductEntity::to);
+  }
+
+  @Override
+  public Page<Product> findBySubCategoryAndBrands(Pageable pageable, FilterQuery filterQuery) {
+    UUID subCategoryId = filterQuery.subCategoryId().value();
+    List<PublicId> brandPublicIds = filterQuery.brandPublicIds();
+
+    // Якщо brandId не вказані, повертаємо всі товари з підкатегорії
+    if (brandPublicIds == null || brandPublicIds.isEmpty()) {
+      return jpaProductRepository
+        .findAllBySubCategoryPublicId(pageable, subCategoryId)
+        .map(ProductEntity::to);
+    }
+
+    List<UUID> brandIds = brandPublicIds.stream()
+      .map(PublicId::value)
+      .toList();
+
+    return jpaProductRepository
+      .findBySubCategoryAndBrandIn(pageable, subCategoryId, brandIds)
       .map(ProductEntity::to);
   }
 }

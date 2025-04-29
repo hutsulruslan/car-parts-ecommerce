@@ -1,6 +1,7 @@
 package com.hutsdev.ecom.product.infrastructure.primary;
 
 import com.hutsdev.ecom.product.application.ProductsApplicationService;
+import com.hutsdev.ecom.product.domain.aggregate.SubCategory;
 import com.hutsdev.ecom.product.domain.vo.PublicId;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -14,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.hutsdev.ecom.product.infrastructure.primary.ProductAdminResource.ROLE_ADMIN;
 
@@ -50,7 +53,7 @@ public class SubCategoriesResource {
   }
 
   @GetMapping
-  public ResponseEntity<Page<RestSubCategory>> getAll(Pageable pageable) {
+  public ResponseEntity<Page<RestSubCategory>> findAll(Pageable pageable) {
     var subCats = productsApplicationService.findAllSubCategory(pageable);
     var rest = new PageImpl<>(
       subCats.getContent().stream().map(RestSubCategory::fromDomain).toList(),

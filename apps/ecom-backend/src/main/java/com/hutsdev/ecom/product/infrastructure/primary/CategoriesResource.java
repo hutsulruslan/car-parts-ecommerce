@@ -62,5 +62,4 @@ public class CategoriesResource {
     );
     return ResponseEntity.ok(restCategories);
   }
-
 }
