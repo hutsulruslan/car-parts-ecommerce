@@ -14,12 +14,18 @@ import com.stripe.model.StripeObject;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static com.hutsdev.ecom.product.infrastructure.primary.ProductAdminResource.ROLE_ADMIN;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -102,5 +108,28 @@ public class OrderResource {
 
       orderApplicationService.updateOrder(sessionInformation);
     }
+  }
+
+  @GetMapping("/user")
+  public ResponseEntity<Page<RestOrderRead>> getOrdersForConnectedUser(Pageable pageable) {
+    Page<Order> orders = orderApplicationService.findOrdersForConnectedUser(pageable);
+    PageImpl<RestOrderRead> restOrderReads = new PageImpl<>(
+      orders.getContent().stream().map(RestOrderRead::from).toList(),
+      pageable,
+      orders.getTotalElements()
+    );
+    return ResponseEntity.ok(restOrderReads);
+  }
+
+  @GetMapping("/admin")
+  @PreAuthorize("hasAnyRole('" + ROLE_ADMIN + "')")
+  public ResponseEntity<Page<RestOrderReadAdmin>> getOrdersForAdmin(Pageable pageable) {
+    Page<Order> orders = orderApplicationService.findOrdersForAdmin(pageable);
+    PageImpl<RestOrderReadAdmin> restOrderReads = new PageImpl<>(
+      orders.getContent().stream().map(RestOrderReadAdmin::from).toList(),
+      pageable,
+      orders.getTotalElements()
+    );
+    return ResponseEntity.ok(restOrderReads);
   }
 }
