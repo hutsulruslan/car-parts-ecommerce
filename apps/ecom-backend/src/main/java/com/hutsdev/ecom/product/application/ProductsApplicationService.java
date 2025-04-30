@@ -1,5 +1,6 @@
 package com.hutsdev.ecom.product.application;
 
+import com.hutsdev.ecom.order.domain.order.aggregate.OrderProductQuantity;
 import com.hutsdev.ecom.product.domain.aggregate.*;
 import com.hutsdev.ecom.product.domain.repository.BrandRepository;
 import com.hutsdev.ecom.product.domain.repository.CategoryRepository;
@@ -23,6 +24,7 @@ public class ProductsApplicationService {
   private SubCategoryCRUD subCategoryCRUD;
   private BrandCRUD brandCRUD;
   private ProductShop productShop;
+  private ProductUpdater productUpdater;
 
   public ProductsApplicationService(ProductRepository productRepository, CategoryRepository categoryRepository, SubCategoryRepository subCategoryRepository, BrandRepository brandRepository) {
     this.productCRUD = new ProductCRUD(productRepository);
@@ -30,6 +32,7 @@ public class ProductsApplicationService {
     this.subCategoryCRUD = new SubCategoryCRUD(subCategoryRepository);
     this.brandCRUD = new BrandCRUD(brandRepository);
     this.productShop = new ProductShop(productRepository);
+    this.productUpdater = new ProductUpdater(productRepository);
   }
 
   @Transactional
@@ -115,5 +118,10 @@ public class ProductsApplicationService {
   @Transactional(readOnly = true)
   public List<Product> getProductsByPublicIdsIn(List<PublicId> publicIds) {
     return productCRUD.findAllByPublicIdIn(publicIds);
+  }
+
+  @Transactional
+  public void updateProductQuantity(List<OrderProductQuantity> orderProductQuantities) {
+    productUpdater.updateProductQuantity(orderProductQuantities);
   }
 }
