@@ -9,7 +9,7 @@ import {
   faXmark
 } from "@fortawesome/free-solid-svg-icons";
 import {faInstagram, faFacebook, faTwitter} from "@fortawesome/free-brands-svg-icons";
-import {faCircleCheck} from "@fortawesome/free-regular-svg-icons";
+import {faCircleCheck, faCircleXmark} from "@fortawesome/free-regular-svg-icons";
 
 
 export const fontAwesomeIcons : IconDefinition[] = [
@@ -23,5 +23,6 @@ export const fontAwesomeIcons : IconDefinition[] = [
   faXmark,
   faCheck,
   faShoppingCart,
-  faCircleCheck
+  faCircleCheck,
+  faCircleXmark
 ];

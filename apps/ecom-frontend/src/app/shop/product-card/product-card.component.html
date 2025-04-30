@@ -10,11 +10,18 @@
     <div class="text-sm">{{ product().brand.name }}</div>
     <h2 class="card-title w-full truncate">
       <div class="truncate">{{ product().name }}</div>
-      <div class="badge badge-secondary">НОВИНКА</div>
+      @if (product().featured) {
+        <div class="badge badge-secondary">Рекомендований</div>
+      }
     </h2>
-    <div>
+    <div *ngIf="product().featured; else noDiscount">
       <span class="line-through me-2">{{ (product().price + 200) | currency:'₴' }}</span>
       <span class="me-2">{{ product().price | currency:'₴' }}</span>
     </div>
+    <ng-template #noDiscount>
+      <div>
+        <span class="me-2">{{ product().price | currency:'₴' }}</span>
+      </div>
+    </ng-template>
   </div>
 </a>

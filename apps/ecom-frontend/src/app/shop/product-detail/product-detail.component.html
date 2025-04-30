@@ -20,10 +20,15 @@
           Кращий вибір
         </div>
       }
-      <div class="text-2xl my-5">
+      <div class="text-2xl my-5" *ngIf="productQuery.data().featured; else regularPrice">
         <span class="line-through me-2">{{productQuery.data().price + 200 | currency:'UAH':'symbol-narrow'}}</span>
         <span class="me-2">{{productQuery.data().price | currency:'UAH':'symbol-narrow'}}</span>
       </div>
+      <ng-template #regularPrice>
+        <div class="text-2xl my-5">
+          <span class="me-2">{{productQuery.data().price | currency:'UAH':'symbol-narrow'}}</span>
+        </div>
+      </ng-template>
       <div>
         Бренд
         <span class="font-bold">{{productQuery.data().brand.name}}</span>
