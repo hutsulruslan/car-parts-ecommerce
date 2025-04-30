@@ -3,10 +3,11 @@ import {CommonModule, isPlatformBrowser} from '@angular/common';
 import {CartService} from "../cart.service";
 import {Oauth2Service} from "../../auth/oauth2.service";
 import {ToastService} from "../../shared/toast/toast.service";
-import {CartItem, CartItemAdd} from "../cart.model";
-import {injectQuery} from "@tanstack/angular-query-experimental";
+import {CartItem, CartItemAdd, StripeSession} from "../cart.model";
+import {injectMutation, injectQuery} from "@tanstack/angular-query-experimental";
 import {lastValueFrom} from "rxjs";
 import {RouterLink} from "@angular/router";
+import {StripeService} from "ngx-stripe";
 
 @Component({
   selector: 'ecom-cart',
@@ -18,6 +19,7 @@ export class CartComponent implements OnInit{
   cartService = inject(CartService);
   oauth2Service = inject(Oauth2Service);
   toastService = inject(ToastService);
+  stripeService = inject(StripeService);
 
   cart: Array<CartItem> = [];
 
@@ -27,13 +29,22 @@ export class CartComponent implements OnInit{
 
   action: 'login' | 'checkout' = 'login';
 
+  isInitPaymentSessionLoading = false;
+
   cartQuery = injectQuery(() => ({
     queryKey: ['cart'],
     queryFn: () => lastValueFrom(this.cartService.getCartDetail())
   }));
 
+  initPaymentSession = injectMutation(() => ({
+    mutationFn: (cart: Array<CartItemAdd>) =>
+      lastValueFrom(this.cartService.initPaymentSession(cart)),
+    onSuccess: (result: StripeSession) => this.onSessionCreateSuccess(result),
+  }));
+
   constructor() {
     this.extractListToUpdate();
+    this.checkUserLoggedIn();
   }
 
   private extractListToUpdate() {
@@ -110,6 +121,25 @@ export class CartComponent implements OnInit{
   }
 
   checkout() {
+    if (this.action === 'login') {
+      this.oauth2Service.login();
+    } else if (this.action === 'checkout') {
+      this.isInitPaymentSessionLoading = true;
+      const cartItemsAdd = this.cart.map(
+        (item) =>
+          ({ publicId: item.publicId, quantity: item.quantity } as CartItemAdd)
+      );
+      this.initPaymentSession.mutate(cartItemsAdd);
+    }
+  }
 
+  private onSessionCreateSuccess(sessionId: StripeSession) {
+    this.cartService.storeSessionId(sessionId.id);
+    this.stripeService
+      .redirectToCheckout({ sessionId: sessionId.id })
+      .subscribe((results) => {
+        this.isInitPaymentSessionLoading = false;
+        this.toastService.show(`Помилка замовлення ${results.error.message}`, 'ERROR');
+      });
   }
 }

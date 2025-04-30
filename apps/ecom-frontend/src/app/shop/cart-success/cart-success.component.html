@@ -1,0 +1,12 @@
+@if (isValidAccess) {
+  <div class="flex flex-col items-center justify-center mt-20">
+    <fa-icon class="text-green-600" [icon]="['far', 'circle-check']" size="5x"></fa-icon>
+    <div class="font-bold text-2xl">Дякуємо за ваше замовлення</div>
+    <div>Підтвердження буде надіслано вам на електронну пошту</div>
+  </div>
+} @else {
+  <div class="flex flex-col items-center justify-center">
+    <div class="font-bold text-2xl">Недійсна сесія кошика</div>
+    <div>Спробуйте ще раз</div>
+  </div>
+}
