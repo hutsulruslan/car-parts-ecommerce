@@ -81,6 +81,6 @@ application:
     client-id: ${KINDE_CLIENT_ID}
     client-secret: ${KINDE_CLIENT_SECRET}
     audience: https://hutsdev.kinde.com/api
-  liqpay:
-    public-key: ${LIQPAY_PUBLIC_KEY}
-    private-key: ${LIQPAY_PRIVATE_KEY}
+  stripe:
+    api-key: ${STRIPE_API_KEY}
+    webhook-secret: ${STRIPE_WEBHOOK_SECRET}

@@ -1,9 +1,13 @@
 package com.hutsdev.ecom.order.application;
 
-import com.hutsdev.ecom.order.domain.order.aggregate.DetailCartItemRequest;
-import com.hutsdev.ecom.order.domain.order.aggregate.DetailCartRequest;
-import com.hutsdev.ecom.order.domain.order.aggregate.DetailCartResponse;
+import com.hutsdev.ecom.order.domain.order.aggregate.*;
+import com.hutsdev.ecom.order.domain.order.repository.OrderRepository;
 import com.hutsdev.ecom.order.domain.order.service.CartReader;
+import com.hutsdev.ecom.order.domain.order.service.OrderCreator;
+import com.hutsdev.ecom.order.domain.order.service.OrderUpdater;
+import com.hutsdev.ecom.order.domain.order.vo.StripeSessionId;
+import com.hutsdev.ecom.order.domain.user.aggregate.User;
+import com.hutsdev.ecom.order.infrastructure.secondary.service.stripe.StripeService;
 import com.hutsdev.ecom.product.application.ProductsApplicationService;
 import com.hutsdev.ecom.product.domain.aggregate.Product;
 import com.hutsdev.ecom.product.domain.vo.PublicId;
@@ -17,10 +21,19 @@ public class OrderApplicationService {
 
   private final ProductsApplicationService productsApplicationService;
   private final CartReader cartReader;
+  private final UsersApplicationService usersApplicationService;
+  private final OrderCreator orderCreator;
+  private final OrderUpdater orderUpdater;
 
-  public OrderApplicationService(ProductsApplicationService productsApplicationService) {
+  public OrderApplicationService(ProductsApplicationService productsApplicationService,
+                                 UsersApplicationService usersApplicationService,
+                                 OrderRepository orderRepository,
+                                 StripeService stripeService) {
     this.productsApplicationService = productsApplicationService;
+    this.usersApplicationService = usersApplicationService;
     this.cartReader = new CartReader();
+    this.orderCreator = new OrderCreator(orderRepository, stripeService);
+    this.orderUpdater = new OrderUpdater(orderRepository);
   }
 
   @Transactional(readOnly = true)
@@ -28,5 +41,21 @@ public class OrderApplicationService {
     List<PublicId> publicIds = detailCartRequest.items().stream().map(DetailCartItemRequest::productId).toList();
     List<Product> productsInformation = productsApplicationService.getProductsByPublicIdsIn(publicIds);
     return cartReader.getDetails(productsInformation);
+  }
+
+  @Transactional
+  public StripeSessionId createOrder(List<DetailCartItemRequest> items) {
+    User authenticatedUser = usersApplicationService.getAuthenticatedUser();
+    List<PublicId> publicIds = items.stream().map(DetailCartItemRequest::productId).toList();
+    List<Product> productsInformation = productsApplicationService.getProductsByPublicIdsIn(publicIds);
+    return orderCreator.create(productsInformation, items, authenticatedUser);
+  }
+
+  @Transactional
+  public void updateOrder(StripeSessionInformation stripeSessionInformation) {
+    List<OrderedProduct> orderedProducts = this.orderUpdater.updateOrderFromStripe(stripeSessionInformation);
+    List<OrderProductQuantity> orderProductQuantities = this.orderUpdater.computeQuantity(orderedProducts);
+    this.productsApplicationService.updateProductQuantity(orderProductQuantities);
+    this.usersApplicationService.updateAddress(stripeSessionInformation.userAddress());
   }
 }

@@ -1,5 +1,6 @@
 package com.hutsdev.ecom.product.infrastructure.secondary.repository;
 
+import com.hutsdev.ecom.order.domain.order.vo.ProductPublicId;
 import com.hutsdev.ecom.product.domain.aggregate.FilterQuery;
 import com.hutsdev.ecom.product.domain.aggregate.Picture;
 import com.hutsdev.ecom.product.domain.aggregate.Product;
@@ -122,5 +123,10 @@ public class SpringDataProductRepository implements ProductRepository {
     List<UUID> publicIdsUUID = publicIds.stream().map(PublicId::value).toList();
     return jpaProductRepository.findAllByPublicIdIn(publicIdsUUID)
       .stream().map(ProductEntity::to).toList();
+  }
+
+  @Override
+  public void updateQuantity(ProductPublicId productPublicId, long quantity) {
+    jpaProductRepository.updateQuantity(productPublicId.value(), quantity);
   }
 }

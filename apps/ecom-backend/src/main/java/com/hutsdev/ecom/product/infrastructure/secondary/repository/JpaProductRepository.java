@@ -4,6 +4,7 @@ import com.hutsdev.ecom.product.infrastructure.secondary.entity.ProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -29,4 +30,10 @@ public interface JpaProductRepository extends JpaRepository<ProductEntity, Long>
   Page<ProductEntity> findBySubCategoryAndBrandIn(Pageable pageable, UUID subCategoryId, List<UUID> brandIds);
 
   List<ProductEntity> findAllByPublicIdIn(List<UUID> publicIds);
+
+  @Modifying
+  @Query("UPDATE ProductEntity  product " +
+    "SET product.nbInStock = product.nbInStock - :quantity " +
+    "WHERE product.publicId = :productPublicId")
+  void updateQuantity(UUID productPublicId, long quantity);
 }

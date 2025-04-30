@@ -1,5 +1,6 @@
 package com.hutsdev.ecom.product.domain.repository;
 
+import com.hutsdev.ecom.order.domain.order.vo.ProductPublicId;
 import com.hutsdev.ecom.product.domain.aggregate.FilterQuery;
 import com.hutsdev.ecom.product.domain.aggregate.Product;
 import com.hutsdev.ecom.product.domain.vo.PublicId;
@@ -27,4 +28,6 @@ public interface ProductRepository {
   Page<Product> findBySubCategoryAndBrands(Pageable pageable, FilterQuery filterQuery);
 
   List<Product> findByPublicIds(List<PublicId> publicIds);
+
+  void updateQuantity(ProductPublicId productPublicId, long quantity);
 }

@@ -1,6 +1,6 @@
 package com.hutsdev.ecom.order.domain.order.aggregate;
 
-import com.hutsdev.ecom.order.domain.order.vo.LiqPaySessionId;
+import com.hutsdev.ecom.order.domain.order.vo.StripeSessionId;
 import com.hutsdev.ecom.order.domain.order.vo.OrderStatus;
 import com.hutsdev.ecom.order.domain.user.aggregate.User;
 import com.hutsdev.ecom.product.domain.vo.PublicId;
@@ -16,16 +16,16 @@ public class Order {
 
   private User user;
 
-  private String liqPaySessionId;
+  private String stripeSessionId;
 
   private PublicId publicId;
 
   private List<OrderedProduct> orderedProducts;
 
-  public Order(OrderStatus status, User user, String liqPaySessionId, PublicId publicId, List<OrderedProduct> orderedProducts) {
+  public Order(OrderStatus status, User user, String stripeSessionId, PublicId publicId, List<OrderedProduct> orderedProducts) {
     this.status = status;
     this.user = user;
-    this.liqPaySessionId = liqPaySessionId;
+    this.stripeSessionId = stripeSessionId;
     this.publicId = publicId;
     this.orderedProducts = orderedProducts;
   }
@@ -38,8 +38,8 @@ public class Order {
     return user;
   }
 
-  public String getLiqPaySessionId() {
-    return liqPaySessionId;
+  public String getStripeSessionId() {
+    return stripeSessionId;
   }
 
   public PublicId getPublicId() {
@@ -51,13 +51,13 @@ public class Order {
   }
 
   public static Order create(User connectedUser, List<OrderedProduct> orderedProducts,
-                       LiqPaySessionId liqPaySessionId) {
+                       StripeSessionId stripeSessionId) {
     return OrderBuilder.order()
       .publicId(new PublicId(UUID.randomUUID()))
       .user(connectedUser)
       .status(OrderStatus.PENDING)
       .orderedProducts(orderedProducts)
-      .liqPaySessionId(liqPaySessionId.value())
+      .stripeSessionId(stripeSessionId.value())
       .build();
   }
 
